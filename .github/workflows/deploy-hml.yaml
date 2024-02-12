@@ -48,7 +48,7 @@ jobs:
 
       - name: Update k8s files
         run: |-
-          branch_name=$(echo ${{ current-branch.outputs.branch_name }})
+          branch_name=$(echo ${{ current_branch.outputs.branch_name }})
           echo "The branch name is $branch_name"
 
   # sonarqube:
