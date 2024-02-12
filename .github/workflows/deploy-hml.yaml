@@ -1,0 +1,45 @@
+name: Deploy on Develop
+
+on:
+  push:
+    branches: ["develop"]
+
+env:
+  PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
+  REGION: "${{ secrets.GCP_REGION }}"
+  REGISTRY: "${{ secrets.GCP_REGISTRY }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: "GCP authentication"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+
+      - name: "Docker auth"
+        run: |-
+          gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+      - name: "Docker build"
+        run: |-
+          make build
+
+      - name: "Docker push"
+        run: |-
+          make push

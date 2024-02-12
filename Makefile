@@ -1,10 +1,10 @@
-REGISTRY=us-central1-docker.pkg.dev/lab-terraform-414113
+DOCKER_REGISTRY=${REGISTRY}/${PROJECT_ID}
 APP_NAME=comments-api
-BRANCH_NAME=main
+BRANCH_NAME=${shell git symbolic-ref --short HEAD}
 SHORT_SHA=$(shell git log --format="%h" -n 1)
 
 build:
-	docker build -t ${REGISTRY}/${APP_NAME}/${BRANCH_NAME}:${SHORT_SHA} .
+	docker build -t ${DOCKER_REGISTRY}/${APP_NAME}/${BRANCH_NAME}:${SHORT_SHA} .
 
 push:
-	docker push ${REGISTRY}/${APP_NAME}/${BRANCH_NAME}:${SHORT_SHA}
+	docker push ${DOCKER_REGISTRY}/${APP_NAME}/${BRANCH_NAME}:${SHORT_SHA}
