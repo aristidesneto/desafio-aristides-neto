@@ -48,6 +48,7 @@ def api_comment_list(content_id):
     content_id = '{}'.format(content_id)
 
     if content_id in comments:
+        logger.debug(f'comment_id found {content_id}')
         return jsonify(comments[content_id])
     else:
         message = 'content_id {} not found'.format(content_id)
