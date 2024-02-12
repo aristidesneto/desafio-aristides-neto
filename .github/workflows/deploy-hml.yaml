@@ -21,9 +21,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Extract branch name
+        id: current-branch
         run: |-
-          echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
+          branch_name=${GITHUB_REF#refs/heads/}
+          echo "##[set-output name=branch_name]${branch_name}"
 
       - name: GCP authentication
         uses: "google-github-actions/auth@v2"
@@ -47,7 +48,8 @@ jobs:
 
       - name: Update k8s files
         run: |-
-          echo 'The branch name is' $BRANCH_NAME
+          branch_name=$(echo ${{ current-branch.outputs.branch_name }})
+          echo "The branch name is $branch_name"
 
   # sonarqube:
 
