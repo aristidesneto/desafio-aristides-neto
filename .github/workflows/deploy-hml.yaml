@@ -59,11 +59,15 @@ jobs:
 
           git clone https://github.com/aristidesneto/comments-api-$branch_name.git comments-api-$branch_name
           cd comments-api-$branch_name
+          pwd
+          ls -lrt
 
           git config --local user.email "cicd@example.com"
           git config --local user.name "CICD"
           git config --local credential.helper 'store --file=.git/credentials'
           echo "https://github.com/aristidesneto:${{ secrets.GH_ACCESS_TOKEN }}" > .git/credentials
+
+          ls -lrt .git/credentials
 
           sed -i "s/$branch_name:.*/$branch_name:abc2abc/g" comments-api-deployment.yaml
 
