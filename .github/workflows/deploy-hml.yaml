@@ -57,7 +57,7 @@ jobs:
           branch_name=$(echo ${{ steps.get_branch.outputs.branch_name }})
           short_commit=$(echo ${{ steps.get_short_commit.outputs.short_commit }})
 
-          git clone https://github.com/aristidesneto/comments-api-$branch_name.git comments-api-$branch_name
+          git clone https://aristidesneto:${{ secrets.GH_ACCESS_TOKEN }}@github.com/aristidesneto/comments-api-$branch_name.git comments-api-$branch_name
           cd comments-api-$branch_name
           pwd
           ls -lrt
