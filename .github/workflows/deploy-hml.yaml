@@ -5,6 +5,7 @@ on:
     branches: ["main", "develop"]
 
 env:
+  APP_NAME: "comments-api"
   PROJECT_ID: "${{ secrets.GCP_PROJECT_ID }}"
   REGION: "${{ secrets.GCP_REGION }}"
   REGISTRY: "${{ secrets.GCP_REGISTRY }}"
@@ -32,6 +33,17 @@ jobs:
           short_commit=${GITHUB_SHA::7}
           echo "##[set-output name=short_commit]${short_commit}"
 
+      - name: Set environment
+        id: get_environment
+        run: |-
+          branch_name=$(echo ${{ steps.get_branch.outputs.branch_name }})
+          if [ $branch_name == 'main' ]; then
+            environment=prd
+          else
+            environment=dev
+          fi
+          echo "##[set-output name=environment]${environment}"
+
       - name: GCP authentication
         uses: "google-github-actions/auth@v2"
         with:
@@ -56,21 +68,23 @@ jobs:
         run: |-
           branch_name=$(echo ${{ steps.get_branch.outputs.branch_name }})
           short_commit=$(echo ${{ steps.get_short_commit.outputs.short_commit }})
+          environment=$(echo ${{ steps.get_environment.outputs.environment }})
+          app_name="${{ env.APP_NAME }}-$environment"
 
-          git clone https://aristidesneto:${{ secrets.GH_ACCESS_TOKEN }}@github.com/aristidesneto/comments-api-$branch_name.git comments-api-$branch_name
+          git clone https://aristidesneto:${{ secrets.GH_ACCESS_TOKEN }}@github.com/aristidesneto/$app_name.git $app_name
 
-          cd comments-api-$branch_name
+          cd $app_name
 
           git config --local user.email "cicd@example.com"
           git config --local user.name "CICD"
           git config --local credential.helper 'store --file=.git/credentials'
           echo "https://github.com/aristidesneto:${{ secrets.GH_ACCESS_TOKEN }}" > .git/credentials
 
-          sed -i "s/$branch_name:.*/$branch_name:$short_commit/g" comments-api-deployment.yaml
+          sed -i "s/$branch_name:.*/$branch_name:$short_commit/g" $APP_NAME-deployment.yaml
 
           git diff
 
-          git commit -am "Update image to $branch_name"
+          git commit -am "Update image to commit $short_commit"
           git push
 
   # sonarqube:
