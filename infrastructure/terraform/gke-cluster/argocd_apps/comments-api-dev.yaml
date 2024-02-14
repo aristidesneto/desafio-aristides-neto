@@ -3,28 +3,12 @@ applications:
     namespace: argocd
     project: default
     source:
-      repoURL: https://github.com/argoproj/argocd-example-apps.git
+      repoURL: https://github.com/aristidesneto/comments-api-dev.git
       targetRevision: HEAD
-      path: guestbook
+      path: .
     destination:
       server: https://kubernetes.default.svc
       namespace: api-dev
-    syncPolicy:
-      automated:
-        prune: false
-        selfHeal: true
-      syncOptions:
-        - CreateNamespace=true
-  - name: comments-api-prd
-    namespace: argocd
-    project: default
-    source:
-      repoURL: https://github.com/argoproj/argocd-example-apps.git
-      targetRevision: HEAD
-      path: guestbook
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: api-prd
     syncPolicy:
       automated:
         prune: false

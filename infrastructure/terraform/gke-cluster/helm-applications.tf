@@ -1,8 +1,8 @@
-# # provider "helm" {
-# #   kubernetes {
-# #     config_path = "~/.kube/config"
-# #   }
-# # }
+provider "kubernetes" {
+  host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth[0].cluster_ca_certificate)
+}
 
 provider "helm" {
   kubernetes {
@@ -29,10 +29,9 @@ resource "helm_release" "argocd" {
   ]
 }
 
-# resource "kubernetes_namespace" "api_dev" {
-#   depends_on = [helm_release.argocd]
+# resource "kubernetes_namespace" "api" {
 #   metadata {
-#     name = "api-dev"
+#     name = "api"
 #   }
 # }
 
