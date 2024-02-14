@@ -1,0 +1,7 @@
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: true
+
+alertmanager:
+  enabled: false
