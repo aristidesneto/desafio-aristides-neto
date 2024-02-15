@@ -29,16 +29,4 @@ resource "google_container_node_pool" "desafio_globo_nodes" {
   }
 }
 
-
 data "google_client_config" "default" {}
-
-# provider "kubernetes" {
-
-#   host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
-#   token                  = data.google_client_config.default.access_token
-#   cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth[0].cluster_ca_certificate)
-
-#   # client_certificate     = base64decode(google_container_cluster.desafio_globo.master_auth.0.client_certificate)
-#   # client_key             = base64decode(google_container_cluster.desafio_globo.master_auth.0.client_key)
-#   # cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth.0.cluster_ca_certificate)
-# }

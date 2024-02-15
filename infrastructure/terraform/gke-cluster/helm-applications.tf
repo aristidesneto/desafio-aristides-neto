@@ -1,8 +1,8 @@
-provider "kubernetes" {
-  host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth[0].cluster_ca_certificate)
-}
+# provider "kubernetes" {
+#   host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
+#   token                  = data.google_client_config.default.access_token
+#   cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth[0].cluster_ca_certificate)
+# }
 
 provider "helm" {
   kubernetes {
@@ -28,19 +28,6 @@ resource "helm_release" "argocd" {
     file("helm_values/argocd.yaml")
   ]
 }
-
-# resource "kubernetes_namespace" "api" {
-#   metadata {
-#     name = "api"
-#   }
-# }
-
-# resource "kubectl_manifest" "install_comments_api_dev" {
-#   depends_on        = [kubernetes_namespace.api_dev]
-#   yaml_body         = file("argocd_apps/comments-api-dev.yaml")
-#   wait              = true
-#   server_side_apply = true
-# }
 
 # Install Kube Prometheus Stack
 resource "helm_release" "kube_stack_prometheus" {
