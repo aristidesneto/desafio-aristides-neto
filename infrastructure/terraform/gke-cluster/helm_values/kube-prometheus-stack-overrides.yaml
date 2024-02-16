@@ -1,0 +1,14 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  additionalDataSources:
+    - name: Loki
+      jsonData:
+        httpHeaderName1: "X-Scope-OrgID"
+      secureJsonData:
+        httpHeaderValue1: "1"
+      orgId: 1
+      type: loki
+      url: http://loki-gateway.loki.svc.cluster.local
+      version: 1

@@ -15,8 +15,7 @@ provider "helm" {
 # Install ArgoCD
 resource "helm_release" "argocd" {
   depends_on = [google_container_node_pool.desafio_globo_nodes]
-
-  name = "argocd"
+  name       = "argocd"
 
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"
@@ -25,7 +24,7 @@ resource "helm_release" "argocd" {
   version          = "6.0.11"
 
   values = [
-    file("helm_values/argocd.yaml")
+    file("helm_values/argocd-overrides.yaml")
   ]
 }
 
@@ -39,19 +38,59 @@ resource "helm_release" "kube_stack_prometheus" {
   namespace        = "prometheus"
   create_namespace = true
   version          = "56.6.2"
+  wait             = false
 
   values = [
-    file("helm_values/kube-prometheus-stack.yaml")
+    file("helm_values/kube-prometheus-stack-overrides.yaml")
   ]
 }
 
-resource "helm_release" "install_comments_api_dev" {
-  depends_on = [helm_release.argocd]
-  chart      = "argocd-apps"
-  name       = "argocd-apps"
-  namespace  = "argocd"
-  repository = "https://argoproj.github.io/argo-helm"
+resource "helm_release" "grafana_loki" {
+  depends_on = [google_container_node_pool.desafio_globo_nodes]
+  name       = "grafana-loki"
+
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "loki"
+  namespace        = "loki"
+  create_namespace = true
+  version          = "5.43.1"
+  wait             = false
+  timeout          = 3000
+
+  # values = [
+  #   file("helm_values/loki-overrides.yaml")
+  # ]
+}
+
+resource "helm_release" "grafana_promtail" {
+  depends_on = [helm_release.grafana_loki]
+  name       = "grafana-promtail"
+
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "promtail"
+  namespace        = "loki"
+  create_namespace = true
+  version          = "6.15.5"
+  wait             = false
+
   values = [
-    file("argocd_apps/comments-api-dev.yaml")
+    file("helm_values/promtail-overrides.yaml")
+  ]
+}
+
+
+resource "helm_release" "install_comments_api" {
+  depends_on = [helm_release.argocd]
+  name       = "argocd-apps"
+
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argocd-apps"
+  namespace        = "argocd"
+  create_namespace = true
+  version          = "1.6.1"
+  wait             = false
+
+  values = [
+    file("argocd_apps/comments-api.yaml")
   ]
 }

@@ -4,11 +4,10 @@
 # controller:
 #   replicas: 1
 
-# server:
-#   replicas: 1
-#   service:
-#     type: LoadBalancer
-
+server:
+  replicas: 1
+  service:
+    type: LoadBalancer
 # repoServer:
 #   replicas: 1
 

@@ -15,7 +15,7 @@ resource "google_container_node_pool" "desafio_globo_nodes" {
   name       = "desafio-globo-node-pool"
   location   = var.zone
   cluster    = google_container_cluster.desafio_globo.name
-  node_count = 3
+  node_count = 4
 
   node_config {
     machine_type = "n1-standard-1"
