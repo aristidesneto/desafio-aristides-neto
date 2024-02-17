@@ -12,3 +12,6 @@ grafana:
       type: loki
       url: http://loki-gateway.loki.svc.cluster.local
       version: 1
+
+  service:
+    type: LoadBalancer
