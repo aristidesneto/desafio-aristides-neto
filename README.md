@@ -1,3 +1,7 @@
+# História
+
+Veja a história desse desafio [aqui](./docs/comments.md).
+
 # Considerações Gerais
 
 Você deverá usar este repositório como o repo principal do projeto, i.e., todos os seus commits devem estar registrados aqui, pois queremos ver como você trabalha.
@@ -5,7 +9,6 @@ Você deverá usar este repositório como o repo principal do projeto, i.e., tod
 A escolha de tecnologias é livre para a resolução do problema. Utilize os componentes e serviços que melhor domina pois a apresentação na entrega do desafio deverá ser como uma aula em que você explica em detalhes cada decisão que tomou.
 
 Registre tudo: testes que foram executados, ideias que gostaria de implementar se tivesse tempo (explique como você as resolveria, se houvesse tempo), decisões que foram tomadas e seus porquês, arquiteturas que foram testadas e os motivos de terem sido modificadas ou abandonadas. Crie um arquivo COMMENTS.md ou HISTORY.md no repositório para registrar essas reflexões e decisões.
-
 
 # O Problema
 
@@ -17,14 +20,14 @@ A aplicação será uma API REST que está disponível neste repositório. Atrav
 
 Os comandos de interação com a API são os seguintes:
 
-* Start da app
+- Start da app
 
 ```
 cd app
 gunicorn --log-level debug api:app
 ```
 
-* Criando e listando comentários por matéria
+- Criando e listando comentários por matéria
 
 ```
 # matéria 1
@@ -44,17 +47,15 @@ curl -sv localhost:8000/api/comment/list/1
 curl -sv localhost:8000/api/comment/list/2
 ```
 
-
 # O que será avaliado na sua solução?
 
-* Automação da infra, provisionamento dos hosts (IaaS)
+- Automação da infra, provisionamento dos hosts (IaaS)
 
-* Automação de setup e configuração dos hosts (IaC)
+- Automação de setup e configuração dos hosts (IaC)
 
-* Pipeline de deploy automatizado
+- Pipeline de deploy automatizado
 
-* Monitoramento dos serviços e métricas da aplicação
-
+- Monitoramento dos serviços e métricas da aplicação
 
 # Dicas
 
