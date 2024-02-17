@@ -12,7 +12,13 @@ def after_request(response):
         request.method,
         request.scheme,
         request.full_path,
-        response.status)
+        response.status, extra={
+            "remote_addr": request.remote_addr, 
+            "method": request.method,
+            "scheme": request.scheme,
+            "full_path": request.full_path,
+            "status": response.status_code
+        })
     
     return response
 
