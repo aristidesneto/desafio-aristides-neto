@@ -1,9 +1,3 @@
-# provider "kubernetes" {
-#   host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
-#   token                  = data.google_client_config.default.access_token
-#   cluster_ca_certificate = base64decode(google_container_cluster.desafio_globo.master_auth[0].cluster_ca_certificate)
-# }
-
 provider "helm" {
   kubernetes {
     host                   = "https://${google_container_cluster.desafio_globo.endpoint}"
@@ -45,6 +39,7 @@ resource "helm_release" "kube_stack_prometheus" {
   ]
 }
 
+# Install Grafana Loki
 resource "helm_release" "grafana_loki" {
   depends_on = [google_container_node_pool.desafio_globo_nodes]
   name       = "grafana-loki"
@@ -62,6 +57,7 @@ resource "helm_release" "grafana_loki" {
   # ]
 }
 
+# Install Grafana Promtail
 resource "helm_release" "grafana_promtail" {
   depends_on = [helm_release.grafana_loki]
   name       = "grafana-promtail"
@@ -78,7 +74,7 @@ resource "helm_release" "grafana_promtail" {
   ]
 }
 
-
+# Install API Comments
 resource "helm_release" "install_comments_api" {
   depends_on = [helm_release.argocd]
   name       = "argocd-apps"
